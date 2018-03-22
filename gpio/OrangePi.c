@@ -130,6 +130,8 @@ int physToWpi[64] =
 #endif /* CONFIG_ORAGNEPI_2G_IOT */
 
 #ifdef CONFIG_ORANGEPI_I96
+// http://wiringpi.com/pins/
+// https://projects.drogon.net/wiringpi-pin-numbering/
 int physToWpi[64] =
 {
     -1,        // 0
@@ -163,7 +165,7 @@ char *physNames[64] =
 
  "      0v", "0v      ",
  "    CTS2", "PWRKEY  ",
- "    TxD2", "0v      ",
+ "    TxD2", "RST     ",
  "    RxD2", "SPI2CLK ",
  "    RTS2", "SPI2DI  ",
  "    TxD1", "SPI2CS1 ",
@@ -172,13 +174,13 @@ char *physNames[64] =
  "    SDA2", "I2SBCK  ",
  "    SCL3", "I2S_DO  ",
  "    SDA3", "I2S_DI_0",
- "  GPIO.1", "GPIO.2  ",
- "  GPIO.3", "CTS3    ",
- "    RTS3", "GPIO.4  ",
- "  GPIO.5", "GPIO.6  ",
- "  GPIO.7", "GPIO.8  ",
- "  GPIO.9", "GPIO.10 ",
- "    3.3v", "NC      ",
+ "  GPIO.0", "GPIO.1  ",
+ "  GPIO.2", "GPIO.3  ",
+ "    CTS3", "RTS3    ", 
+ "  GPIO.4", "GPIO.5  ",
+ "  GPIO.6", "GPIO.7  ",
+ "  GPIO.8", "GPIO.9  ",
+ "    2.8v", "NC      ",
  "      5v", "NC      ",
  "      0v", "0v      ",
        NULL, NULL,
@@ -186,8 +188,8 @@ char *physNames[64] =
        NULL, NULL,
        NULL, NULL,
        NULL, NULL,
-  "GPIO.17", "GPIO.18",
-  "GPIO.19", "GPIO.20",
+       NULL, NULL,
+       NULL, NULL,
    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 };
 #endif /* CONFIG_ORANGEPI_I96 */
