@@ -168,7 +168,7 @@ void readallPhys(int physPin)
 		if (val == -1) 
 			printf(" | 0");
 		else 
-			printf(" | 1");
+			printf(" | %d", val);
 	}
 
 	/* Pin numbers: */
