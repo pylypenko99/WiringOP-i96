@@ -837,37 +837,29 @@ void setPadDrive (int group, int value)
 
 /*
  * getAlt:
- *	Returns the ALT bits for a given port. Only really of-use
- *	for the gpio readall command (I think)
- *********************************************************************************
+ *   Returns the ALT bits for a given port. Only really of-use
+ *   for the gpio readall command (I think)
  */
 
 int getAlt (int pin)
 {
-  int fSel, shift, alt ;
+    int fSel, shift, alt;
 
-  pin &= 63 ;
-   /*add for BananaPro by LeMaker team*/
-	if(BPRVER == version)
-	{
+    pin &= 63;
 
-		//printf("[%s:L%d] the pin:%d  mode: %d is invaild,please check it over!\n", __func__,  __LINE__, pin, wiringPiMode);
-	}
-/*end 2014.08.19*/
+    if (wiringPiMode == WPI_MODE_PINS)
+        pin = pinToGpio[pin];
+    else if (wiringPiMode == WPI_MODE_PHYS)
+        pin = physToGpio[pin];
+    else if (wiringPiMode != WPI_MODE_GPIO)
+        return 0;
 
-  /**/ if (wiringPiMode == WPI_MODE_PINS)
-    pin = pinToGpio [pin] ;
-  else if (wiringPiMode == WPI_MODE_PHYS)
-    pin = physToGpio [pin] ;
-  else if (wiringPiMode != WPI_MODE_GPIO)
-    return 0 ;
+    fSel    = gpioToGPFSEL[pin];
+    shift   = gpioToShift[pin];
 
-  fSel    = gpioToGPFSEL [pin] ;
-  shift   = gpioToShift  [pin] ;
+    alt = (*(gpio + fSel) >> shift) & 7;
 
-  alt = (*(gpio + fSel) >> shift) & 7 ;
-
-  return alt ;
+    return alt;
 }
 
 
@@ -879,20 +871,13 @@ int getAlt (int pin)
 
 void pwmSetMode (int mode)
 {
-   /*add for BananaPro by LeMaker team*/
-  if (BPRVER == version)
-  {
-		return;
-  }
-  /*end 2014.08.19*/
-  
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
-  {
-    if (mode == PWM_MODE_MS)
-      *(pwm + PWM_CONTROL) = PWM0_ENABLE | PWM1_ENABLE | PWM0_MS_MODE | PWM1_MS_MODE ;
-    else
-      *(pwm + PWM_CONTROL) = PWM0_ENABLE | PWM1_ENABLE ;
-  }
+	if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || 
+					(wiringPiMode == WPI_MODE_GPIO)) {
+	if (mode == PWM_MODE_MS)
+		*(pwm + PWM_CONTROL) = PWM0_ENABLE | PWM1_ENABLE | PWM0_MS_MODE | PWM1_MS_MODE;
+	else
+		*(pwm + PWM_CONTROL) = PWM0_ENABLE | PWM1_ENABLE;
+	}
 }
 
 
@@ -905,17 +890,13 @@ void pwmSetMode (int mode)
 
 void pwmSetRange (unsigned int range)
 {
- /*add for BananaPro by LeMaker team*/
-  if (BPRVER == version)
-  {
-	  return;
-  }
- /*end 2014.08.19*/
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
-  {
-    *(pwm + PWM0_RANGE) = range ; delayMicroseconds (10) ;
-    *(pwm + PWM1_RANGE) = range ; delayMicroseconds (10) ;
-  }
+	if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || 
+			(wiringPiMode == WPI_MODE_GPIO)) {
+		*(pwm + PWM0_RANGE) = range; 
+		delayMicroseconds (10);
+		*(pwm + PWM1_RANGE) = range; 
+		delayMicroseconds(10);
+	}
 }
 
 
@@ -931,13 +912,6 @@ void pwmSetClock (int divisor)
 {
   uint32_t pwm_control ;
 	
- /*add for BananaPro by LeMaker team*/
- if (BPRVER == version)
- {
-	 return;
- }
- /*end 2014.08.19*/
- 
   divisor &= 4095 ;
  	
   if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
@@ -1144,49 +1118,49 @@ void pinModeAlt (int pin, int mode)
  */
 void pinMode(int pin, int mode)
 {
-	int    fSel, shift, alt;
-	struct wiringPiNodeStruct *node = wiringPiNodes;
-	int origPin = pin;
+    int    fSel, shift, alt;
+    struct wiringPiNodeStruct *node = wiringPiNodes;
+    int origPin = pin;
 	
-	if(ORANGEPI == version ) {
-		if (wiringPiDebug)
-			printf("PinMode: pin:%d,mode:%d\n", pin, mode);
-		if ((pin & PI_GPIO_MASK) == 0) {
-			if (wiringPiMode == WPI_MODE_PINS)
-				pin = pinToGpio[pin];
-			else if (wiringPiMode == WPI_MODE_PHYS)
-				pin = physToGpio[pin];
-			if (-1 == pin) {
-				printf("[%s:L%d] the pin:%d is invaild,please check it over!\n", 
+    if(ORANGEPI == version ) {
+        if (wiringPiDebug)
+            printf("PinMode: pin:%d,mode:%d\n", pin, mode);
+            if ((pin & PI_GPIO_MASK) == 0) {
+                if (wiringPiMode == WPI_MODE_PINS)
+                    pin = pinToGpio[pin];
+                else if (wiringPiMode == WPI_MODE_PHYS)
+                    pin = physToGpio[pin];
+                if (-1 == pin) {
+                    printf("[%s:L%d] the pin:%d is invaild,please check it over!\n", 
 							__func__,  __LINE__, pin);
-				return;
-			}
-			if (mode == INPUT) {
-				OrangePi_set_gpio_mode(pin, INPUT);
-				wiringPinMode = INPUT;
-				return;
-			} else if (mode == OUTPUT) {
-				OrangePi_set_gpio_mode(pin, OUTPUT);
-				wiringPinMode = OUTPUT;
-				return ;
-			} else if (mode == PWM_OUTPUT) {
-				if(pin != 259) {
-					printf("the pin you choose is not surport hardware PWM\n");
-					printf("you can select PI3 for PWM pin\n");
-					printf("or you can use it in softPwm mode\n");
-					return;
-				}
-				OrangePi_set_gpio_mode(pin, PWM_OUTPUT);
-				wiringPinMode = PWM_OUTPUT;
-				return;
-			} else
-				return;
-		} else {
-			if ((node = wiringPiFindNode (pin)) != NULL)
-				node->pinMode(node, pin, mode);
-			return ;
-		}
-	}
+                    return;
+                }
+                if (mode == INPUT) {
+                    OrangePi_set_gpio_mode(pin, INPUT);
+                    wiringPinMode = INPUT;
+                    return;
+                } else if (mode == OUTPUT) {
+                    OrangePi_set_gpio_mode(pin, OUTPUT);
+                    wiringPinMode = OUTPUT;
+                    return;
+                } else if (mode == PWM_OUTPUT) {
+                    if(pin != 259) {
+                        printf("the pin you choose is not surport hardware PWM\n");
+                        printf("you can select PI3 for PWM pin\n");
+                        printf("or you can use it in softPwm mode\n");
+                        return;
+                    }
+                    OrangePi_set_gpio_mode(pin, PWM_OUTPUT);
+                    wiringPinMode = PWM_OUTPUT;
+                    return;
+                } else
+                    return;
+            } else {
+                if ((node = wiringPiFindNode (pin)) != NULL)
+                    node->pinMode(node, pin, mode);
+                    return;
+            }
+    }
  
 	if ((pin & PI_GPIO_MASK) == 0) {
 		if (wiringPiMode == WPI_MODE_PINS)
@@ -1851,7 +1825,7 @@ int wiringPiSetup(void)
 		return wiringPiFailure(WPI_ALMOST, 
 				"wiringPiSetup: Unable to open /dev/mem: %s\n", strerror(errno));
 
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	/* GPIO */
 	gpio = (uint32_t *)mmap(0, BLOCK_SIZE * 3, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE);
 	if ((int32_t)(unsigned long)gpio == -1)

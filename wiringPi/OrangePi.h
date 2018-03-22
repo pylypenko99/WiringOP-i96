@@ -1,7 +1,7 @@
 #ifndef _ORANGEPI_H
 #define _ORANGEPI_H
 
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 /********** OrangePi 2G-IOT *************/
 /*
  * GPIOA_BASE                         0x20930000
@@ -101,6 +101,8 @@ extern const char *piModelNames[6];
 #endif
 
 #ifdef CONFIG_ORANGEPI_2G_IOT
+extern int ORANGEPI_PIN_MASK[4][32];
+#elif CONFIG_ORANGEPI_I96
 extern int ORANGEPI_PIN_MASK[4][32];
 #elif CONFIG_ORANGEPI_PC2
 extern int ORANGEPI_PIN_MASK[9][32];

@@ -62,28 +62,27 @@ int physToGpioOrangePi[64] =//head num map to OrangePi
 
 int physToPinOrangePi[64] = //return wiringPI pin
 {
-  -1,       // 0
-  -1, -1,   // 1, 2
-   8, -1,  //3, 4
-   9, -1,  //5, 6
-   7, 15,  //7, 8
-  -1, 16, //9,10
-  0, 1, //11,12
-  2, -1, //13,14
-  3, 4, //15,16
-  -1, 5, //17,18
-  12, -1, //19,20
-   13, 6, //21,22
-  14, 10, //23, 24
-  -1,  11,  // 25, 26
-
-  30,   31,   //27, 28
-  21,  -1,  //29, 30
-  22,  26,  //31, 32
-  23, -1, //33, 34
-  24, 27, //35, 36
-  25, 28, //37, 38
-  -1, 29, //39, 40
+	-1,        //0
+	-1,	 -1,   //1, 2
+	 8,  -1,   //3, 4
+	 9,  -1,   //5, 6
+	 7,  15,   //7, 8
+	-1,  16,   //9, 10
+	 0,   1,   //11,12
+	 2,  -1,   //13,14
+	 3,   4,   //15,16
+	-1,   5,   //17,18
+	12,  -1,   //19,20
+	13,   6,   //21,22
+	14,  10,   //23,24
+	-1,  11,   //25,26
+	30,  31,   //27,28
+	21,  -1,   //29,30
+	22,  26,   //31,32
+	23,  -1,   //33,34
+	24,  27,   //35,36
+	25,  28,   //37,38
+	-1,  29,   //39,40
 // Padding:
 
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,   // ... 56
@@ -98,7 +97,97 @@ int ORANGEPI_PIN_MASK[4][32] =  //[BANK]  [INDEX]
  { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},//PD
 };
 
-#endif /* CONFIG_ORANGEPI_2G_IOT */
+#endif /* OrangePi 2G-IOT*/
+#ifdef CONFIG_ORANGEPI_I96
+int pinToGpioOrangePi[64] =
+{ 
+	-1,  40,      // 0, 1
+	-1,  72,      // 2, 3
+	71,   2,      // 4  5
+	41,   4,      // 6, 7
+	14,   6,      // 8, 9
+	70,   3,      //10,11
+	 0,  10,      //12,13
+	 1,   9,      //14,15
+	38,  13,      //16,17
+	39,  11,      //18,19
+	15,  20,      //20,21
+	56,  98,      //22,23
+	99,  22,      //24,25
+	30,  29,      //26,27
+	28,  27,    //28,29
+	26,  25,    //30,31
+
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // ... 47
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,// ... 63
+};
+
+int physToGpioOrangePi[64] =//head num map to OrangePi
+{
+	-1,       // 0
+	-1, -1,   // 1, 2
+	40, -1,   // 3, 4
+	72, -1,   // 5, 6
+	71,  2,   // 7, 8
+	41,  4,   // 9, 10
+	14,  6,   // 11, 12
+	70,  3,   // 13, 14
+	 0, 10,   // 15, 16
+	 1,  9,   // 17, 18
+	38, 13,   // 19, 20
+	39, 11,   // 21, 22
+	15, 20,   // 23, 24
+	56, 98,   // 25, 26
+	99, 22,   // 27, 28
+	30, 29,   // 29, 30
+	28, 27,   // 31, 32
+	26, 25,   // 33, 34
+	-1, -1,   // 35, 36
+	-1, -1,   // 37, 38
+	-1, -1,   // 39, 40
+// Padding:
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,   // ... 56
+  -1, -1, -1, -1, -1, -1, -1,   // ... 63
+};
+
+int physToPinOrangePi[64] = //return wiringPI pin
+{
+	-1,        //0
+	-1,  -1,   //1, 2
+	 1,   2,   //3, 4
+	 3,  -1,   //5, 6
+	 4,   5,   //7, 8
+	 6,   7,   //9, 10
+	 8,   9,   //11,12
+	10,  11,   //13,14
+	12,  13,   //15,16
+	14,  15,   //17,18
+	16,  17,   //19,20
+	18,  19,   //21,22
+	20,  21,   //23,24
+	22,  23,   //25,26
+	24,  25,   //27,28
+	26,  27,   //29,30
+	28,  29,   //31,32
+	30,  31,   //33,34
+	-1,  -1,   //35,36
+	-1,  -1,   //37,38
+	-1,  -1,   //39,40
+// Padding:
+
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,   // ... 56
+  -1, -1, -1, -1, -1, -1, -1,   // ... 63
+};
+
+int ORANGEPI_PIN_MASK[4][32] =  //[BANK]  [INDEX]
+{
+ { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},//PA
+ { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},//PB
+ { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},//PC
+ { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},//PD
+};
+
+#endif /* CONFIG_ORANGEPI_i96 */
 
 #ifdef CONFIG_ORANGEPI_PC2
 int pinToGpioOrangePi[64] =
@@ -494,7 +583,9 @@ const char *piModelNames[6] =
     "Model B+",
     "Compute Module",
 #ifdef CONFIG_ORANGEPI_2G_IOT
-	"OrangePi 2G-IOT",
+    "OrangePi 2G-IOT",
+#elif CONFIG_ORANGEPI_I96
+    "OrangePi i96",
 #elif CONFIG_ORANGEPI_PC2
 	"OrangePi PC2",
 #elif CONFIG_ORANGEPI_A64
@@ -514,7 +605,7 @@ volatile uint32_t *OrangePi_gpioC;
  */
 unsigned int readR(unsigned int addr)
 {
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
     unsigned int val = 0;
     unsigned int mmap_base = (addr & ~MAP_MASK);
     unsigned int mmap_seek = (addr - mmap_base);
@@ -539,12 +630,13 @@ unsigned int readR(unsigned int addr)
 #endif
 }
 
+
 /*
  * Wirte value to register helper
  */
 void writeR(unsigned int val, unsigned int addr)
 {
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
     unsigned int mmap_base = (addr & ~MAP_MASK);
     unsigned int mmap_seek = (addr - mmap_base);
 
@@ -566,16 +658,119 @@ void writeR(unsigned int val, unsigned int addr)
 #endif
 }
 
+int OrangePi_sys_set_mode(int pin, int mode)
+{
+    int fd;
+    char buf[8];
+    char path[80];
+
+    if (pin == 71 || pin == 70 || pin == 72)
+        return 1;
+    sprintf(path, "/sys/class/gpio/gpio%d/direction", pin);
+
+    fd = open(path, O_RDWR);
+    if (fd < 0) {
+        printf("ERROR: Configure %s faild\n", path);
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    if (mode == INPUT)
+        strcpy(buf, "in");
+    else
+        strcpy(buf, "out");
+    write(fd, buf, strlen(buf));
+    close(fd);
+
+    return 0;
+}
+
+int OrangePi_sys_write(int pin, int value)
+{
+    int fd;
+    char buf[8];
+    char path[80];
+
+    if (pin == 70 || pin == 71 || pin == 72) {
+        char on[80];
+	char off[80];
+	char pins[20];
+
+	memset(on, 0, sizeof(on));
+	memset(off, 0, sizeof(off));
+	memset(pins, 0, sizeof(pin));
+	sprintf(on, "/sys/devices/platform/rda-gpioc/gpo_set");
+	sprintf(off, "/sys/devices/platform/rda-gpioc/gpo_clear");
+
+	sprintf(pins, "%d", (pin - 64));
+
+	if (value == 1) 
+	    fd = open(on, O_RDWR);
+	else 
+	    fd = open(off, O_RDWR);
+	if (fd < 0)
+	    return 0;
+	write(fd, pins, strlen(pins));
+	close(fd);
+
+	return 0;
+    }
+    sprintf(path, "/sys/class/gpio/gpio%d/value", pin);
+
+    fd = open(path, O_RDWR);
+    if (fd < 0) {
+        printf("ERROR: Configure %s faild\n", path);
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    if (value == 1)
+        strcpy(buf, "1");
+    else
+        strcpy(buf, "0");
+    write(fd, buf, strlen(buf));
+    close(fd);
+
+    return 0;
+}
+
+int OrangePi_sys_read(int pin)
+{
+    int fd;
+    char buf[8];
+    char path[80];
+
+    if (pin == 70 || pin == 71 || pin == 72)
+        return 0;
+    sprintf(path, "/sys/class/gpio/gpio%d/value", pin);
+
+    fd = open(path, O_RDWR);
+    if (fd < 0) {
+        printf("ERROR: Configure %s faild\n", path);
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    read(fd, buf, 1);
+    close(fd);
+
+    if (strcmp(buf, "1") == 0)
+        return 1;
+    else
+        return 0;
+}
+
 /*
  * Set GPIO Mode on OrangePi 2G-IOT  
  */
 int OrangePi_set_gpio_mode(int pin, int mode)
 {
+#ifdef CONFIG_ORANGEPI_I96
+    OrangePi_sys_set_mode(pin, mode);
+    return 0;
+#endif
     unsigned int regval = 0;
     unsigned int bank   = pin >> 5;
     unsigned int index  = pin - (bank << 5);
     unsigned int phyaddr = 0;
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	unsigned int base_address = 0;
 #else
 	int offset = ((index - ((index >> 3) << 3)) << 2);
@@ -588,7 +783,7 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 		phyaddr = GPIO_BASE_MAP + (bank * 36) + ((index >> 3) << 2);
 #endif
 
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
     /* Offset of register */
 	if (bank == 0)            /* group A */
 		base_address = GPIOA_BASE;
@@ -598,19 +793,44 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 		base_address = GPIOC_BASE;
 	else if (bank == 3)       /* group D */
 		base_address = GPIOD_BASE;
-	else
+	else {
 		printf("Bad pin number\n");
+		return -1;
+	}
 
 	if (mode == INPUT) 
 		phyaddr = base_address + SET_IN_REGISTER;
 	else if (mode == OUTPUT)
 		phyaddr = base_address + OEN_SET_OUT_REGISTER;
-	else
+	else {
 		printf("Invalid mode\n");
+		return -1;
+	}
 #endif
     /* Ignore unused gpio */
     if (ORANGEPI_PIN_MASK[bank][index] != -1) {
-#ifndef CONFIG_ORANGEPI_2G_IOT 
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
+		/* Bug on GPIOB_24 for OrangePi 2G-IOT */
+		if (bank == 1 && index == 24) {
+			int fd;
+			char buf[8];
+
+			fd = open("/sys/class/gpio/gpio56/direction", O_RDWR);
+			if (fd < 0) {
+				printf("ERROR: Configure GPIOB-24 faild\n");
+				return -1;
+			}
+			memset(buf, 0, sizeof(buf));
+			if (mode == INPUT)
+				strcpy(buf, "in");
+			else
+				strcpy(buf, "out");
+			write(fd, buf, strlen(buf));
+			close(fd);
+
+			return 0;
+		}
+#else 
 		regval = readR(phyaddr);
 			if (wiringPiDebug)
 				printf("Before read reg val: 0x%x offset:%d\n",regval,offset);
@@ -620,7 +840,7 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 
         /* Set Input */
         if(INPUT == mode) {
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
             writeR(GPIO_BIT(index), phyaddr);
 #else
 			regval &= ~(7 << offset);
@@ -630,7 +850,7 @@ int OrangePi_set_gpio_mode(int pin, int mode)
                 printf("Input mode set over reg val: %#x\n",regval);
 #endif
         } else if(OUTPUT == mode) { /* Set Output */
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
             writeR(GPIO_BIT(index), phyaddr);
 			/* Set default value as 0 */
 			writeR(GPIO_BIT(index), base_address + CLR_REGISTER);
@@ -657,10 +877,14 @@ int OrangePi_set_gpio_mode(int pin, int mode)
  */
 int OrangePi_digitalWrite(int pin, int value)
 {
+#ifdef CONFIG_ORANGEPI_I96
+    OrangePi_sys_write(pin, value);
+    return 0;
+#endif
     unsigned int bank   = pin >> 5;
     unsigned int index  = pin - (bank << 5);
     unsigned int phyaddr = 0;
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	unsigned int base_address = 0;
 #else
     unsigned int regval = 0;
@@ -673,7 +897,7 @@ int OrangePi_digitalWrite(int pin, int value)
 		phyaddr = GPIO_BASE_MAP + (bank * 36) + 0x10;
 #endif
 
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	/* version 0.1 only support GPIOC output on OrangePi 2G-IOT */
 	if (bank == 2) { /* group C */
 		int fd;
@@ -694,8 +918,28 @@ int OrangePi_digitalWrite(int pin, int value)
 		close(fd);
 		return 0;
 	}
+	/* Bug on GPIOB_24 for OrangePi 2G-IOT */
+	if (bank == 1 && index == 24) {
+		int fd;
+		char buf[8];
+
+		fd = open("/sys/class/gpio/gpio56/value", O_RDWR);
+		if (fd < 0) {
+			printf("ERROR: write GPIOB-24 faild\n");
+			return -1;
+		}
+		memset(buf, 0, sizeof(buf));
+		if (value == 1)
+			strcpy(buf, "1");
+		else
+			strcpy(buf, "0");
+		write(fd, buf, strlen(buf));
+		close(fd);
+
+		return 0;
+	}
 #endif
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
     /* Offset of register */
 	if (bank == 0)            /* group A */
 		base_address = GPIOA_BASE;
@@ -718,7 +962,7 @@ int OrangePi_digitalWrite(int pin, int value)
 #endif
     /* Ignore unused gpio */
     if (ORANGEPI_PIN_MASK[bank][index] != -1) {
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 		writeR(GPIO_BIT(index), phyaddr);
 #else
 		regval = readR(phyaddr);
@@ -748,21 +992,13 @@ int OrangePi_digitalWrite(int pin, int value)
  */
 int OrangePi_digitalRead(int pin)
 {
+#ifdef CONFIG_ORANGEPI_I96
+    return OrangePi_sys_read(pin);
+#endif
 	int bank = pin >> 5;
 	int index = pin - (bank << 5);
 	int val;
-#ifndef CONFIG_ORANGEPI_2G_IOT
-	unsigned int phyaddr;
-	
-	if (bank == 11) {
-		bank = 0;
-		phyaddr = GPIOL_BASE + (bank * 36) + 0x10;
-	}
-	else
-		phyaddr = GPIO_BASE_MAP + (bank * 36) + 0x10;
-#endif
-
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	unsigned int base_address = 0;
 	unsigned int phys_OEN_R;
 	unsigned int phys_SET_R;
@@ -787,20 +1023,46 @@ int OrangePi_digitalRead(int pin)
 	phys_OEN_R = base_address + OEN_VAL_REGISTER;
 	phys_SET_R = base_address + SET_REGISTER;
 	phys_VAL_R = base_address + VAL_REGISTER;
+#else
+	unsigned int phyaddr;
+	
+	if (bank == 11) {
+		bank = 0;
+		phyaddr = GPIOL_BASE + (bank * 36) + 0x10;
+	}
+	else
+		phyaddr = GPIO_BASE_MAP + (bank * 36) + 0x10;
+
 #endif
 	if (ORANGEPI_PIN_MASK[bank][index] != -1) {
-#ifndef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
+		/* Bug on GPIOB_24 for OrangePi 2G-IOT */
+		if (bank == 1 && index == 24) {
+			int fd;
+			char buf;
+
+			fd = open("/sys/class/gpio/gpio56/value", O_RDWR);
+			if (fd < 0) {
+				printf("ERROR: Configure GPIOB-24 faild\n");
+				return -1;
+			}
+			memset(&buf, 0, 1);
+			read(fd, &buf, 1);
+			close(fd);
+
+			return (int)buf;
+		}
+		if (readR(phys_OEN_R) & GPIO_BIT(index))   /* Input */ 
+			val = (readR(phys_VAL_R) & GPIO_BIT(index)) ? 1 : 0;
+		else                                       /* Ouput */
+			val = (readR(phys_SET_R) & GPIO_BIT(index)) ? 1 : 0;
+		return val;
+#else
 		val = readR(phyaddr);
 		val = val >> index;
 		val &= 1;
 		if (wiringPiDebug)
 			printf("Read reg val: 0x%#x, bank:%d, index:%d\n", val, bank, index);
-		return val;
-#else
-		if (readR(phys_OEN_R) & GPIO_BIT(index))   /* Input */ 
-			val = (readR(phys_VAL_R) & GPIO_BIT(index)) ? 1 : 0;
-		else                                       /* Ouput */
-			val = (readR(phys_SET_R) & GPIO_BIT(index)) ? 1 : 0;
 		return val;
 #endif
 	}
@@ -815,7 +1077,7 @@ int isOrangePi(void)
 	FILE *cpuFd;
 	char line [120];
 	char *d;
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	/* Support: OrangePi 2G-IOT and OrangePi i96 */
 	char *OrangePi_string = "rda8810";
 #elif CONFIG_ORANGEPI_PC2

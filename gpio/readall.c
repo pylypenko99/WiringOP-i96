@@ -73,9 +73,7 @@ static int physToWpi [64] =
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //41-> 55
    -1, -1, -1, -1, -1, -1, -1, -1 // 56-> 63
 } ;
-#endif
 
-#ifndef CONFIG_ORANGEPI
 static char *physNames [64] =
 {
   NULL,
@@ -170,7 +168,7 @@ void readallPhys(int physPin)
 		if (val == -1) 
 			printf(" | 0");
 		else 
-			printf(" | %d", val);
+			printf(" | 1");
 	}
 
 	/* Pin numbers: */
