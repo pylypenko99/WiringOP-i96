@@ -19,12 +19,12 @@
 #define GPIO_BIT(x)                        (1U << (x))
 #define GPIO_IS_GROUP_C(pin)			   ((pin >> 5U) == 2)
 
-#define OEN_VAL_REGISTER                   (0x00)
-#define OEN_SET_OUT_REGISTER               (0x04)
-#define SET_IN_REGISTER                    (0x08)
-#define VAL_REGISTER                       (0x0C)
-#define SET_REGISTER                       (0x10)
-#define CLR_REGISTER                       (0x14)
+#define OEN_VAL_REGISTER                   (0x00 / 4) // uint32_t pointer moves 4bytes by one
+#define OEN_SET_OUT_REGISTER               (0x04 / 4)
+#define SET_IN_REGISTER                    (0x08 / 4)
+#define VAL_REGISTER                       (0x0C / 4)
+#define SET_REGISTER                       (0x10 / 4)
+#define CLR_REGISTER                       (0x14 / 4)
 
 #define MEM_INFO                           (512)
 #define MAP_SIZE_L                         (0x1000)
