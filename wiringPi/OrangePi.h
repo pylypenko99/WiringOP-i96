@@ -1,6 +1,7 @@
 #ifndef _ORANGEPI_H
 #define _ORANGEPI_H
 
+#define GPIO_PHY_NUM	40 // total count of physical gpio
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 /********** OrangePi 2G-IOT *************/
 /*

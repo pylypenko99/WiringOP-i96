@@ -414,7 +414,7 @@ void OrangePiReadAll(void)
     printf (" | BCM | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | BCM |\n");
     printf (" +-----+-----+----------+------+---+----++----+---+------+----------+-----+-----+\n");
 
-    for (pin = 1 ; pin <= 40 ; pin += 2)
+    for (pin = 1 ; pin <= GPIO_PHY_NUM; pin += 2)
         readallPhys(pin) ;
 
     printf (" +-----+-----+----------+------+---+----++----+---+------+----------+-----+-----+\n");

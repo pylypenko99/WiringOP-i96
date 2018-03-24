@@ -853,7 +853,7 @@ int getAlt(int pin)
 	else if (wiringPiMode == WPI_MODE_GPIO)
 		soc_pin = pin;
 	else
-		return 0;
+		return -1;
 
 	//printf("|i: %d, r: %d, v: %x, m: %x|", ipin, rpin, *gpio, (mask >> rpin));
 	// 0 : output, 1 : input -> 0 : "in", 1: "out"
@@ -867,7 +867,7 @@ int getAlt(int pin)
 	else if (wiringPiMode == WPI_MODE_GPIO)
 		soc_pin = ipin;
 	else
-		return 0;
+		return -1;
 
 	int fSel, shift, alt;
 
