@@ -192,8 +192,8 @@ void readallPhys(int physPin)
 
 	printf (" | %-5s", physNames[physPin]);
 
-	(physPinToGpio(physPin) > 0) ? printf(" | %-3d ", physPinToGpio(physPin)) : printf(" |     ");
 	(physPinToPin(physPin) > 0) ? printf(" | %-3d ", physPinToPin(physPin)) : printf(" |     ");
+	(physPinToGpio(physPin) > 0) ? printf(" | %-3d ", physPinToGpio(physPin)) : printf(" |     ");	
 	
 	printf(" |\n");
 }
