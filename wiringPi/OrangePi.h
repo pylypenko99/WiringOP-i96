@@ -16,7 +16,8 @@
 #define GPIOC_BASE                         0x11A08000
 #define GPIOD_BASE                         0x20932000
 #define GPIO_NUM                           (0x80)
-#define GPIO_BIT(x)                        (1UL << (x))
+#define GPIO_BIT(x)                        (1U << (x))
+#define GPIO_IS_GROUP_C(pin)			   ((pin >> 5U) == 2)
 
 #define OEN_VAL_REGISTER                   (0x00)
 #define OEN_SET_OUT_REGISTER               (0x04)
@@ -95,6 +96,7 @@ extern unsigned int readR(unsigned int addr);
 extern void writeR(unsigned int val, unsigned int addr);
 extern int OrangePi_digitalWrite(int pin, int value);
 extern int OrangePi_digitalRead(int pin);
+extern int OrangePi_digitalModeRead(int pin);
 
 #ifdef CONFIG_ORANGEPI
 extern const char *piModelNames[6];
