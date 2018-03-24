@@ -126,12 +126,12 @@ void readallPhys(int physPin)
 	int pin;
 	int val;
 
-	(physPinToGpio(physPin) > 0) ? printf(" | %3d ", physPinToGpio(physPin)) : printf(" |     ");
-	(physPinToPin(physPin) > 0) ? printf(" | %3d ", physPinToPin(physPin)) : printf(" |     ");	
+	(physPinToGpio(physPin) >= 0) ? printf(" | %3d ", physPinToGpio(physPin)) : printf(" |     ");
+	(physPinToPin(physPin) >= 0) ? printf(" | %3d ", physPinToPin(physPin)) : printf(" |     ");
 	
 	printf(" | %s", physNames[physPin]);
 
-	if (physPinToPin(physPin) > 0)
+	if (physPinToPin(physPin) >= 0)
 	{
 		if (wpMode == WPI_MODE_GPIO)
 			pin = physPinToGpio(physPin);
@@ -164,7 +164,7 @@ void readallPhys(int physPin)
 
 	/* Same, reversed */
 
-	if (physPinToPin(physPin) > 0)
+	if (physPinToPin(physPin) >= 0)
 	{
 		if (wpMode == WPI_MODE_GPIO)
 			pin = physPinToGpio(physPin);
@@ -192,8 +192,8 @@ void readallPhys(int physPin)
 
 	printf (" | %-5s", physNames[physPin]);
 
-	(physPinToPin(physPin) > 0) ? printf(" | %-3d ", physPinToPin(physPin)) : printf(" |     ");
-	(physPinToGpio(physPin) > 0) ? printf(" | %-3d ", physPinToGpio(physPin)) : printf(" |     ");	
+	(physPinToPin(physPin) >= 0) ? printf(" | %-3d ", physPinToPin(physPin)) : printf(" |     ");
+	(physPinToGpio(physPin) >= 0) ? printf(" | %-3d ", physPinToGpio(physPin)) : printf(" |     ");
 	
 	printf(" |\n");
 }
