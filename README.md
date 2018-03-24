@@ -1,101 +1,82 @@
-WiringPi on OrangePi
------------------------------------------------
+   WiringPi for OrangePi i96 is not included [official OrangePi Repo](https://github.com/OrangePiLibra/WiringPi) at the moment. I committed [the code](https://github.com/JYKeith123/WiringPi/commit/8200c4bc32b7dd52496b5d33df1b25311b771924) for OrangePi i96 from [official debian image](http://www.orangepi.org/downloadresources/orangepii96/orangepii96_75fdb65e681d4439f14e4531.html). but still didn't work.
 
-The Open source project of WiringPi on OrangePi. maintain from www.orangepi.org
+   The purpose of this Repo is for me to make basic GPIO functionality works at least. I'm very new to using WringPi and am not guarantee code stability. Use at your own risk.
 
-### Usage
+### How to build and install
 
-  * Download
+```sh
+$ ./build clean
+$ ./build OrangePi_i96
+$ ./build OrangePi_i96 install
+```
 
-    ```
-      On OrangePi 2G-IOT:
-        env GIT_SSL_NO_VERIFY=true git clone https://github.com/OrangePiLibra/WiringPi.git 
-      On Other board:
-        git clone https://github.com/OrangePiLibra/WiringPi.git
-    ```
-  * Compile and install wiringPi
-   
-    On OrangePi 2G-IOT
+### Resouces and facts
+1. pin numbering
+there are 3 pin numbering data in WiringPi/OrangePi.c.
 
-    ```
-      cd WiringPi
-      sudo ./build OrangePi_2G-IOT
-      sudo ./build OrangePi_2G-IOT install
-    ```
-    On OrangePi PC2
+| variable name | what I understand |
+| ------ | ------ |
+| physToGPIO- | physical pin number from board to SoC GPIO numbering (this is called BCM for raspberypi. this could be changed by manufacturer). You can access GPIO from filesystem /sys/class/gpio/ with this pin number. I tested [physToGpioOrangePi](https://github.com/JYKeith123/WiringPi/commit/8200c4bc32b7dd52496b5d33df1b25311b771924) for i96 from debian image seems correct.|
+| pinToGPIO- | WiringPi numbering to SoC GPIO numbering |
+| physToPin | Physical pin number to WiringPi numbering. you can change this. Gorden who made WiringPi explained what he intended about numbering for raspberry pi in [this link](http://wiringpi.com/pins/)  |
 
-    ```
-      cd WiringPi
-      sudo ./build OrangePi_PC2
-      sudo ./build OrangePi_PC2 install
-    ```
-    On OrangePi Win/Win plus
 
-    ```
-      cd WiringPi
-      sudo ./build OrangePi_A64
-      sudo ./build OrangePi_A64 install
-    ```
-    On OrangePi PC/PC plus/One/Lite/PC plus
+2. I have only one i96 and tested GPIO with Soc GPIO number via shell like below.
+```sh
+$ echo "out" > /sys/class/gpio/gpio3/direction
+$ echo "0" > /sys/class/gpio/gpio3/value
+$ echo "1" > /sys/class/gpio/gpio3/value
+```
+I tested simple blinking LED with GPIO and found working GPIOs. I'm not sure if all i96s are same with my one i96.
+![Alt text](http://drive.google.com/uc?export=view&id=1hhYOHaDVrTkZ2CvuBzIEt1kpB1yy0er5)
+green colored is working GPIO.
+red colored is always High.
+light red colored is also always High but week LED light.
+(I don't know why this happen. I checked voltage and it's equivalant voltage with red colored (output volatage of GPIO : 2.9v, resistor : 270¥Ø))
+No color is GPIO not working except power source and ground.
 
-    ```
-      cd WiringPi
-      sudo ./build OrangePi_H3
-      sudo ./build OrangePi_H3 install
-    ```
-    On OrangePi Zero
+3. On 90 page of [this chip datasheet](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf) for raspberry pi, you can see physical addresses to access GPIO. And 45 page of [RDA8810PL datasheet](https://www.google.co.kr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&ved=0ahUKEwitiPriuoLaAhXClpQKHcHTBhcQFgg3MAI&url=https%3A%2F%2Fgithub.com%2Faib%2Fopi2g-utils%2Ffiles%2F1232725%2F386cd004-3df5-48aa-9567-2f111779377e.pdf&usg=AOvVaw2hhhEKrpX5m27F4evme8kS) is for 2G IoT and i96 which is quite different with raspberry pi IOC.
+So specific codes for OrangePi are written in wringPi/OrangePi.c.
+I found some information from [the uncommited code before](https://github.com/JYKeith123/WiringPi/commit/8200c4bc32b7dd52496b5d33df1b25311b771924). 
+- 2G IoT and i96 has 4 Group of GPIO. A, B, C, D.
+- Group C is special (differenct memory address and access point). I think this is for alternative functionality because RDA8810 seems doesn't support ALT mode for GPIO basically unlike raspberry pi.
+Group C has differenct access point from path /sys/devices/platform/rda-gpioc/, but it doesn't work.
+- each group has 32 GPIO.
 
-    ```
-      cd WiringPi
-      sudo ./build OrangePi_ZERO
-      sudo ./build OrangePi_ZERO install
-    ```
-  * Utilze WiringPi
+| group | Soc GPIO number | memory address (see 45 page of [this](https://www.google.co.kr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&ved=0ahUKEwitiPriuoLaAhXClpQKHcHTBhcQFgg3MAI&url=https%3A%2F%2Fgithub.com%2Faib%2Fopi2g-utils%2Ffiles%2F1232725%2F386cd004-3df5-48aa-9567-2f111779377e.pdf&usg=AOvVaw2hhhEKrpX5m27F4evme8kS))|
+| ------ | ------ | ------ |
+|A | 0~31 | 0x20930000 |
+|B | 32~63 | 0x20931000 |
+|C | 64~95 | 0x11A08000 |
+|D | 96~127 | 0x20932000 |
 
-    The location of demo code for WiringPi on OrangePi as follow:
-    ```
-      cd WiringPi/example/OrangePi
-      make OrangePi
-      ./OrangePi
-    ```
-  
-  * More information
+- You can control GPIO of each group via memory address above.
+- It seems that pwm, clk, pad are not supported.
 
-    More information about WiringPi on OrangePi, please refer:
-    ```
-      cd  WiringPi/example/OrangePi
-      cat README.md
-    ```
-  * Gpio readall
-   
-    Use command `gpio readall`.
 
-    ```
-       orangepi@orangepi:~$ gpio readall
-       +-----+-----+----------+------+---+--OrangePi+---+------+---------+-----+--+
-       | BCM | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | BCM |
-       +-----+-----+----------+------+---+----++----+---+------+----------+-----+-----+
-       |     |     |     3.3v |      |   |  1 || 2  |   |      | 5v       |     |     |
-       |   2 |  -1 |    SDA.0 |      |   |  3 || 4  |   |      | 5V       |     |     |
-       |   3 |  -1 |    SCL.0 |      |   |  5 || 6  |   |      | 0v       |     |     |
-       |   4 |   6 | IO6 PA06 |  OUT | 0 |  7 || 8  |   |      | TxD3     |     |     |
-       |     |     |       0v |      |   |  9 || 10 |   |      | RxD3     |     |     |
-       |  17 |  -1 |     RxD2 |      |   | 11 || 12 | 0 | OUT  | IO1 PD14 | 1   | 18  |
-       |  27 |  -1 |     TxD2 |      |   | 13 || 14 |   |      | 0v       |     |     |
-       |  22 |  -1 |     CTS2 |      |   | 15 || 16 | 0 | OUT  | IO4 PC04 | 4   | 23  |
-       |     |     |     3.3v |      |   | 17 || 18 | 0 | OUT  | IO5 PC07 | 5   | 24  |
-       |  10 |  -1 |     MOSI |      |   | 19 || 20 |   |      | 0v       |     |     |
-       |   9 |  -1 |     MISO |      |   | 21 || 22 |   |      | RTS2     |     |     |
-       |  11 |  -1 |     SCLK |      |   | 23 || 24 |   |      | SPI-CE0  |     |     |
-       |     |     |       0v |      |   | 25 || 26 |   |      | CE1      |     |     |
-       |   0 |  -1 |    SDA.1 |      |   | 27 || 28 |   |      | SCL.1    |     |     |
-       |   5 |   7 |  IO7 PA7 |  OUT | 0 | 29 || 30 |   |      | 0v       |     |     |
-       |   6 |   8 |  IO8 PA8 |  OUT | 0 | 31 || 32 | 0 | OUT  | IO9 PG08 | 9   | 12  |
-       |  13 |  10 | IO10 PA9 |  OUT | 0 | 33 || 34 |   |      | 0v       |     |     |
-       |  19 |  12 | IO12PA10 |  OUT | 0 | 35 || 36 | 0 | OUT  | IO13PG09 | 13  | 16  |
-       |  26 |  14 | IO14PA20 |  OUT | 0 | 37 || 38 | 0 | OUT  | IO15PG06 | 15  | 20  |
-       |     |     |       0v |      |   | 39 || 40 | 0 | OUT  | IO16PG07 | 16  | 21  |
-       +-----+-----+----------+------+---+----++----+---+------+----------+-----+-----+
-       | BCM | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | BCM |
-       +-----+-----+----------+------+---+--OrangePi+------+----------+-----+-----+
-      ```
+
+wiringPi README
+===============
+
+Please note that the official way to get wiringPi is via git from
+git.drogon.net and not GitHub.
+
+ie.
+
+  git clone git://git.drogon.net/wiringPi
+
+The version of wiringPi held on GitHub by "Gadgetoid" is used to build the
+wiringPython, Ruby, Perl, etc. wrappers for these other languages. This
+version may lag the official Drogon release.  Pull requests may not be
+accepted to Github....
+
+Please see
+
+  http://wiringpi.com/
+
+for the official documentation, etc. and the best way to submit bug reports, etc.
+is by sending an email to projects@drogon.net
+
+Thanks!
+
+  -Gordon
