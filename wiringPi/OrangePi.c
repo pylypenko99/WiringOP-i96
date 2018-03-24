@@ -817,28 +817,7 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 #endif
     /* Ignore unused gpio */
     if (ORANGEPI_PIN_MASK[bank][index] != -1) {
-#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
-		/* Bug on GPIOB_24 for OrangePi 2G-IOT */
-		if (bank == 1 && index == 24) {
-			int fd;
-			char buf[8];
-
-			fd = open("/sys/class/gpio/gpio56/direction", O_RDWR);
-			if (fd < 0) {
-				printf("ERROR: Configure GPIOB-24 faild\n");
-				return -1;
-			}
-			memset(buf, 0, sizeof(buf));
-			if (mode == INPUT)
-				strcpy(buf, "in");
-			else
-				strcpy(buf, "out");
-			write(fd, buf, strlen(buf));
-			close(fd);
-
-			return 0;
-		}
-#else 
+#if !defined (CONFIG_ORANGEPI_2G_IOT) && !defined (CONFIG_ORANGEPI_I96)		
 		regval = readR(phyaddr);
 			if (wiringPiDebug)
 				printf("Before read reg val: 0x%x offset:%d\n",regval,offset);
