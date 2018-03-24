@@ -119,7 +119,7 @@ static void doReadallExternal(void)
 void readallPhys(int physPin)
 {
 #ifdef CONFIG_ORANGEPI
-	if (physPin < 0 || physPin > 40/*GPIO_PHY_NUM*/)
+	if (physPin < 0 || physPin > GPIO_PHY_NUM)
 		return;
 #endif
 
