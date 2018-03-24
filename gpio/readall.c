@@ -47,70 +47,43 @@ extern int wpMode;
 #endif
 
 #ifndef CONFIG_ORANGEPI
-static int physToWpi [64] =
-{
-  -1,        // 0
-  -1,  -1,   // 1, 2
-   8,  -1,   // 3, 4
-   9,  -1,   // 5, 6
-   7,  15,   // 7, 8
-  -1,  16,   // 9, 10
-   0,   1,   //11, 12
-   2,  -1,   //13, 14
-   3,   4,   //15, 16
-  -1,   5,   //17, 18
-  12,  -1,   //19, 20
-  13,   6,   //21, 22
-  14,  10,   //23, 24
-  -1,  11,   //25, 26
-  30,  31,   //27, 28
-  21,  -1,   //29, 30
-  22,  26,   //31, 32
-  23,  -1,   //33, 34
-  24,  27,   //35, 36
-  25,  28,   //37, 38
-  -1,  29,   //39, 40
-   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //41-> 55
-   -1, -1, -1, -1, -1, -1, -1, -1 // 56-> 63
-} ;
-#endif
 
-#ifndef CONFIG_ORANGEPI
 static char *physNames [64] =
 {
   NULL,
 
- "    3.3v", "5v      ",
- "   SDA.0", "5V      ",
- "   SCL.0", "0v      ",
- "  GPIO.7", "TxD3    ",
- "      0v", "RxD3    ",
- "    RxD2", "GPIO.1  ",
- "    TxD2", "0v      ",
- "    CTS2", "GPIO.4  ",
- "    3.3v", "GPIO.5  ",
- "    MOSI", "0v      ",
- "    MISO", "RTS2    ",
- "    SCLK", "CE0     ",
- "      0v", "GPIO.11 ",
- "   SDA.1", "SCL.1   ",
- " GPIO.21", "0v      ",
- " GPIO.22", "RTS1    ",
- " GPIO.23", "0v      ",
- " GPIO.24", "CTS1    ",
- " GPIO.25", "TxD1    ",
- "      0v", "RxD1    ",
+  "      0v", "0v      ",
+  "    CTS2", "PWRKEY  ",
+  "    TxD2", "RST     ",
+  "    RxD2", "SPI2CLK ",
+  "    RTS2", "SPI2DI  ",
+  "    TxD1", "SPI2CS1 ",
+  "    RxD1", "SPI2DIO ",
+  "    SCL2", "I2SLRCK ",
+  "    SDA2", "I2SBCK  ",
+  "    SCL3", "I2S_DO  ",
+  "    SDA3", "I2S_DI_0",
+  "  GPIO.1", "GPIO.2  ",
+  "  GPIO.3", "GPIO.4  ",
+  "    CTS3", "RTS3    ",
+  "  GPIO.5", "GPIO.6  ",
+  "  GPIO.7", "GPIO.8  ",
+  "  GPIO.9", "GPIO.10 ",
+  "    2.8v", "NC      ",
+  "      5v", "NC      ",
+  "      0v", "0v      ",
        NULL, NULL,
        NULL, NULL,
        NULL, NULL,
        NULL, NULL,
        NULL, NULL,
-  "GPIO.17", "GPIO.18",
-  "GPIO.19", "GPIO.20",
+	   NULL, NULL,
+	   NULL, NULL,
    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 };
 #endif
 
+#define ALT_COUNT 8
 static char *alts[] =
 {
   "IN", "OUT", "ALT5", "ALT4", "ALT0", "ALT1", "ALT2", "ALT3"
@@ -145,34 +118,45 @@ static void doReadallExternal(void)
 
 void readallPhys(int physPin)
 {
+#ifdef CONFIG_ORANGEPI
+	if (physPin < 0 || physPin > GPIO_PHY_NUM)
+		return;
+#endif
+
 	int pin;
 	int val;
 
-	if (physPinToGpio(physPin) == -1)
-		printf(" |     |    ");
-	else
-		printf(" | %3d | %3d", physPinToGpio(physPin), physToWpi[physPin]);
-
+	(physPinToGpio(physPin) >= 0) ? printf(" | %3d ", physPinToGpio(physPin)) : printf(" |     ");
+	(physPinToPin(physPin) >= 0) ? printf(" | %3d ", physPinToPin(physPin)) : printf(" |     ");
+	
 	printf(" | %s", physNames[physPin]);
 
-	if (physToWpi[physPin] == -1)
-		printf(" |      |  ");
-	else {
+	if (physPinToPin(physPin) >= 0)
+	{
 		if (wpMode == WPI_MODE_GPIO)
 			pin = physPinToGpio(physPin);
 		else if (wpMode == WPI_MODE_PHYS)
 			pin = physPin;
+		else if (wpMode == WPI_MODE_PINS)
+			pin = physPinToPin(physPin);
 		else
-			pin = physToWpi[physPin];
+			pin = -1;
 
-		printf(" | %4s", alts[getAlt(pin)]);
+		int alt = getAlt(pin);
+		(alt >= 0 && alt < ALT_COUNT) ? printf(" | %4s", alts[alt]) : printf(" | INVALID");
+		
 		val = digitalRead(pin);
-		if (val == -1) 
+		if (val == -1)
 			printf(" | 0");
-		else 
+		else
 			printf(" | %d", val);
 	}
-
+	else
+	{
+		printf(" |      |  ");
+	}
+		
+	
 	/* Pin numbers: */
 	printf(" | %2d", physPin);
 	++physPin;
@@ -180,31 +164,37 @@ void readallPhys(int physPin)
 
 	/* Same, reversed */
 
-	if (physToWpi[physPin] == -1)
-		printf(" |   |     ");
-	else {
+	if (physPinToPin(physPin) >= 0)
+	{
 		if (wpMode == WPI_MODE_GPIO)
 			pin = physPinToGpio(physPin);
 		else if (wpMode == WPI_MODE_PHYS)
 			pin = physPin;
+		else if (wpMode == WPI_MODE_PINS)
+			pin = physPinToPin(physPin);
 		else
-			pin = physToWpi[physPin];
+			pin = -1;
+				
 
 		val = digitalRead(pin);
-		if (val == -1) 
+		if (val == -1)
 			printf(" | 0");
-		else 
+		else
 			printf(" | %d", val);
-		printf(" | %-4s", alts[getAlt(pin)]);
+
+		int alt = getAlt(pin);
+		(alt >= 0 && alt < ALT_COUNT) ? printf(" | %-4s", alts[alt]) : printf(" | INVALID");
+	}
+	else
+	{
+		printf(" |   |     ");
 	}
 
 	printf (" | %-5s", physNames[physPin]);
 
-	if (physToWpi[physPin] == -1)
-		printf(" |     |    ");
-	else
-		printf(" | %-3d | %-3d", physToWpi[physPin], physPinToGpio(physPin));
-
+	(physPinToPin(physPin) >= 0) ? printf(" | %-3d ", physPinToPin(physPin)) : printf(" |     ");
+	(physPinToGpio(physPin) >= 0) ? printf(" | %-3d ", physPinToGpio(physPin)) : printf(" |     ");
+	
 	printf(" |\n");
 }
 

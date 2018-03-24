@@ -32,7 +32,7 @@ STATIC=libwiringPi.a
 DYNAMIC=libwiringPi.so.$(VERSION)
 
 #DEBUG	= -g -O0
-DEBUG	= -O2
+#DEBUG	= -O2
 CC	?= gcc
 INCLUDE	= -I.
 DEFS	= -D_GNU_SOURCE
@@ -50,6 +50,11 @@ endif
 
 ifeq ($(PLATFORM), OrangePi_2G-IOT)
 EXTRA_CFLAGS = -DCONFIG_ORANGEPI_2G_IOT
+EXTRA_CFLAGS += -DCONFIG_ORANGEPI
+endif
+
+ifeq ($(PLATFORM), OrangePi_i96)
+EXTRA_CFLAGS = -DCONFIG_ORANGEPI_I96
 EXTRA_CFLAGS += -DCONFIG_ORANGEPI
 endif
 
@@ -91,6 +96,10 @@ SRC	=	wiringPi.c						\
 		drcSerial.c RaspberryPi.c
 
 ifeq ($(PLATFORM), OrangePi_2G-IOT)
+SRC += OrangePi.c
+endif
+
+ifeq ($(PLATFORM), OrangePi_i96)
 SRC += OrangePi.c
 endif
 

@@ -27,7 +27,7 @@ DESTDIR=/usr
 PREFIX?=/local
 
 #DEBUG	= -g -O0
-DEBUG	= -O2
+#DEBUG	= -O2
 CC	?= gcc
 INCLUDE	= -I$(DESTDIR)$(PREFIX)/include
 CFLAGS	+= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
@@ -45,6 +45,11 @@ endif
 
 ifeq ($(PLATFORM), OrangePi_2G-IOT)
 EXTRA_CFLAGS = -DCONFIG_ORANGEPI_2G_IOT
+EXTRA_CFLAGS += -DCONFIG_ORANGEPI
+endif
+
+ifeq ($(PLATFORM), OrangePi_i96)
+EXTRA_CFLAGS = -DCONFIG_ORANGEPI_I96
 EXTRA_CFLAGS += -DCONFIG_ORANGEPI
 endif
 
@@ -74,6 +79,10 @@ endif
 SRC	=	gpio.c extensions.c readall.c pins.c
 
 ifeq ($(PLATFORM), OrangePi_2G-IOT)
+  SRC += OrangePi.c
+endif
+
+ifeq ($(PLATFORM), OrangePi_i96)
   SRC += OrangePi.c
 endif
 

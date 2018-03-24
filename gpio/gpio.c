@@ -725,6 +725,7 @@ void doMode (int argc, char *argv [])
 		pinMode(pin, OUTPUT);
 	else if (strcasecmp(mode, "output") == 0) 
 		pinMode(pin, OUTPUT);
+#ifndef CONFIG_ORANGEPI
 	else if (strcasecmp(mode, "pwm") == 0) 
 		pinMode(pin, PWM_OUTPUT);
 	else if (strcasecmp(mode, "pwmTone") == 0) 
@@ -737,6 +738,7 @@ void doMode (int argc, char *argv [])
 		pullUpDnControl(pin, PUD_OFF);
 	else if (strcasecmp(mode, "off") == 0) 
 		pullUpDnControl(pin, PUD_OFF);
+#endif
 	else {
 		fprintf(stderr, 
 				"%s: Invalid mode: %s. Should be in/out/pwm/clock/up/down/tri\n", argv [1], mode);
@@ -1335,14 +1337,15 @@ int main (int argc, char *argv [])
 		doRead(argc, argv);
 	else if (strcasecmp(argv[1], "write") == 0) 
 		doWrite(argc, argv);
+	else if (strcasecmp(argv[1], "toggle") == 0)
+		doToggle(argc, argv);
+#ifndef CONFIG_ORANGEPI
 	else if (strcasecmp(argv[1], "pwm") == 0) 
 		doPwm(argc, argv);
 	else if (strcasecmp(argv[1], "awrite") == 0) 
 		doAwrite(argc, argv);
 	else if (strcasecmp(argv[1], "aread") == 0) 
 		doAread(argc, argv);
-	else if (strcasecmp(argv [1], "toggle") == 0) 
-		doToggle(argc, argv);
 	else if (strcasecmp(argv [1], "pwm-bal") == 0) 
 		doPwmMode(PWM_MODE_BAL);
 	else if (strcasecmp(argv [1], "pwm-ms") == 0) 
@@ -1355,6 +1358,9 @@ int main (int argc, char *argv [])
 		doPwmTone(argc, argv);
 	else if (strcasecmp(argv [1], "usbp") == 0) 
 		doUsbP(argc, argv);
+	else if (strcasecmp(argv[1], "wb") == 0)
+		doWriteByte(argc, argv);
+#endif	
 	else if (strcasecmp(argv[1], "readall") == 0) 
 		doReadall();
 	else if (strcasecmp(argv [1], "nreadall" ) == 0) 
@@ -1366,9 +1372,7 @@ int main (int argc, char *argv [])
 	else if (strcasecmp(argv [1], "i2cd") == 0) 
 		doI2Cdetect(argc, argv);
 	else if (strcasecmp(argv [1], "reset") == 0) 
-		doReset(argv[0]);
-	else if (strcasecmp(argv[1], "wb") == 0) 
-		doWriteByte(argc, argv);
+		doReset(argv[0]);	
 	else {
 		fprintf(stderr, "%s: Unknown command: %s.\n", argv[0], argv[1]);
 		exit(EXIT_FAILURE);

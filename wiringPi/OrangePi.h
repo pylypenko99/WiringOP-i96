@@ -1,7 +1,7 @@
 #ifndef _ORANGEPI_H
 #define _ORANGEPI_H
 
-#ifdef CONFIG_ORANGEPI_2G_IOT
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 /********** OrangePi 2G-IOT *************/
 /*
  * GPIOA_BASE                         0x20930000
@@ -16,7 +16,8 @@
 #define GPIOC_BASE                         0x11A08000
 #define GPIOD_BASE                         0x20932000
 #define GPIO_NUM                           (0x80)
-#define GPIO_BIT(x)                        (1UL << (x))
+#define GPIO_BIT(x)                        (1U << (x))
+#define GPIO_IS_GROUP_C(pin)			   ((pin >> 5U) == 2)
 
 #define OEN_VAL_REGISTER                   (0x00)
 #define OEN_SET_OUT_REGISTER               (0x04)
@@ -26,7 +27,7 @@
 #define CLR_REGISTER                       (0x14)
 
 #define MEM_INFO                           (512)
-#define MAP_SIZE_L                         (4 * 4096)
+#define MAP_SIZE_L                         (4096 * 2)
 
 #endif /* CONFIG_ORANGEPI_2G_IOT */
 
@@ -95,12 +96,15 @@ extern unsigned int readR(unsigned int addr);
 extern void writeR(unsigned int val, unsigned int addr);
 extern int OrangePi_digitalWrite(int pin, int value);
 extern int OrangePi_digitalRead(int pin);
+extern int OrangePi_digitalModeRead(int pin);
 
 #ifdef CONFIG_ORANGEPI
 extern const char *piModelNames[6];
 #endif
 
 #ifdef CONFIG_ORANGEPI_2G_IOT
+extern int ORANGEPI_PIN_MASK[4][32];
+#elif CONFIG_ORANGEPI_I96
 extern int ORANGEPI_PIN_MASK[4][32];
 #elif CONFIG_ORANGEPI_PC2
 extern int ORANGEPI_PIN_MASK[9][32];
