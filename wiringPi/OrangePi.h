@@ -27,7 +27,7 @@
 #define CLR_REGISTER                       (0x14)
 
 #define MEM_INFO                           (512)
-#define MAP_SIZE_L                         (4 * 4096)
+#define MAP_SIZE_L                         (0x1000)
 
 #endif /* CONFIG_ORANGEPI_2G_IOT */
 
