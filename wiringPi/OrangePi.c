@@ -987,12 +987,9 @@ int OrangePi_digitalWrite(int pin, int value)
 int OrangePi_digitalRead(int pin)
 {
 	uint32_t bank = pin >> 5U;
-	uint32_t index = pin % 32;
-	int val;
+	uint32_t index = pin % 32;	
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
-	uint32_t base_address = 0;
-	uint32_t phys_OEN_R;
-	uint32_t phys_SET_R;
+	uint32_t base_address = 0;	
 	uint32_t phys_VAL_R;
 
 	/* version 0.1 not support GPIOC input function */
@@ -1010,8 +1007,7 @@ int OrangePi_digitalRead(int pin)
 		base_address = GPIOD_BASE;
 	else
 		printf("Bad pin number\n");
-
-	phys_OEN_R = base_address + OEN_VAL_REGISTER;	
+	
 	phys_VAL_R = base_address + VAL_REGISTER;
 #else
 	uint32_t phyaddr;
@@ -1028,7 +1024,7 @@ int OrangePi_digitalRead(int pin)
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 		return (readR(phys_VAL_R) & GPIO_BIT(index)) ? 1 : 0;
 #else
-		val = readR(phyaddr);
+		int val = readR(phyaddr);
 		val = val >> index;
 		val &= 1;
 		if (wiringPiDebug)
