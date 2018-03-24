@@ -204,7 +204,6 @@ static volatile uint32_t *timerIrqRaw ;
 #define PWM_CLK_DIV_48K		11
 #define PWM_CLK_DIV_72K		12
 
-static int wiringPinMode = WPI_MODE_UNINITIALISED ;
 int wiringPiCodes = FALSE ;
 
 /*
@@ -848,11 +847,11 @@ int getAlt(int pin)
 
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)    		
 	if (wiringPiMode == WPI_MODE_PINS)
-		soc_pin = pinToGpio[ipin];
+		soc_pin = pinToGpio[pin];
 	else if (wiringPiMode == WPI_MODE_PHYS)
-		soc_pin = physToGpio[ipin];
+		soc_pin = physToGpio[pin];
 	else if (wiringPiMode == WPI_MODE_GPIO)
-		soc_pin = ipin;
+		soc_pin = pin;
 	else
 		return 0;
 
@@ -1503,7 +1502,7 @@ int analogRead (int pin)
 
 void analogWrite (int pin, int value)
 {
-	if (ORANGEPI == version) return -1;
+	if (ORANGEPI == version) return;
 
   struct wiringPiNodeStruct *node = wiringPiNodes ;
 
