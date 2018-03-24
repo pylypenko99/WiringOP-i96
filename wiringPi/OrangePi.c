@@ -615,9 +615,9 @@ uint32_t readR(uint32_t addr)
 	uint32_t mmap_seek = (addr - mmap_base);
 
 	if (mmap_base == GPIOC_BASE) /* Group C */
-		val = *(OrangePi_gpioC + mmap_seek);
+		val = *((uint32_t *)(((char *)OrangePi_gpioC) + mmap_seek));
 	else                         /* Group A, B and D */
-		val = *(OrangePi_gpio + mmap_seek);
+		val = *((uint32_t *)(((char *)OrangePi_gpio) + mmap_seek));
     return val;
 #else
 	uint32_t val = 0;
@@ -645,9 +645,9 @@ void writeR(uint32_t val, uint32_t addr)
 	uint32_t mmap_seek = (addr - mmap_base);
 
 	if (mmap_base == GPIOC_BASE)
-		*(OrangePi_gpioC + mmap_seek) = val;
+		*((uint32_t *)(((char *)(OrangePi_gpioC)) + mmap_seek)) = val;
 	else
-		*(OrangePi_gpio + mmap_seek) = val;
+		*((uint32_t *)(((char *)(OrangePi_gpio)) + mmap_seek)) = val;
 #else
 	uint32_t mmap_base = (addr & ~MAP_MASK);
 	uint32_t mmap_seek = ((addr - mmap_base) >> 2);
