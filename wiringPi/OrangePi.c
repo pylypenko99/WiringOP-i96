@@ -604,6 +604,10 @@ const char *piModelNames[6] =
 volatile uint32_t *OrangePi_gpio;
 volatile uint32_t *OrangePi_gpioC;
 
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
+volatile struct rda_config_regs *OrangePi_cfg_regs;
+#endif
+
 /*
  * Read register value helper  
  */
@@ -780,6 +784,7 @@ int OrangePi_set_gpio_mode(int pin, int mode)
     uint32_t phyaddr = 0;
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 	uint32_t base_address = 0;
+	volatile uint32_t *cfg_address = 0;
 #else
 	int offset = ((index - ((index >> 3) << 3)) << 2);
 
@@ -792,15 +797,23 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 #endif
 
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
-    /* Offset of register */
-	if (bank == 0)            /* group A */
+	/* Offset of register */
+	if (bank == 0) {           /* group A */
 		base_address = GPIOA_BASE;
-	else if (bank == 1)       /* group B */
+		cfg_address = &OrangePi_cfg_regs->ap_gpioa_mode;
+	}
+	else if (bank == 1) {      /* group B */
 		base_address = GPIOB_BASE;
-	else if (bank == 2)       /* group C */
+		cfg_address = &OrangePi_cfg_regs->ap_gpiob_mode;
+	}
+	else if (bank == 2) {      /* group C */
 		base_address = GPIOC_BASE;
-	else if (bank == 3)       /* group D */
+		cfg_address = &OrangePi_cfg_regs->bb_gpio_mode;
+	}
+	else if (bank == 3) {      /* group D */
 		base_address = GPIOD_BASE;
+		cfg_address = &OrangePi_cfg_regs->ap_gpiod_mode;
+	}
 	else {
 		printf("Bad pin number\n");
 		return -1;
@@ -814,6 +827,12 @@ int OrangePi_set_gpio_mode(int pin, int mode)
 		printf("Invalid mode\n");
 		return -1;
 	}
+
+	// enable pin
+	if (wiringPiDebug)
+		printf("Enable pin[%#x, %p]: index:%d\n", RDA_CONFIG_REGS, (void *)cfg_address, index);
+	*cfg_address |= (1 << index);
+
 #endif
     /* Ignore unused gpio */
     if (ORANGEPI_PIN_MASK[bank][index] != -1) {

@@ -1853,6 +1853,11 @@ int wiringPiSetup(void)
 				"wiringPiSetup: Unable to open /dev/mem: %s\n", strerror(errno));
 
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
+	/* GPIO Config */
+	OrangePi_cfg_regs = (struct rda_config_regs *)mmap(0, sysconf(_SC_PAGE_SIZE), PROT_READ | PROT_WRITE, MAP_SHARED, fd, RDA_CONFIG_REGS);
+	if ((int32_t)(unsigned long)OrangePi_cfg_regs == -1)
+		return wiringPiFailure(WPI_ALMOST,
+				"wiringPiSetup: mmap (GPIO Config) failed: %s\n", strerror(errno));
 	/* GPIO */
 	gpio = (uint32_t *)mmap(0, BLOCK_SIZE * 3, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE);
 	if ((int32_t)(unsigned long)gpio == -1)

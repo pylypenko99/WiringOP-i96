@@ -1,6 +1,8 @@
 #ifndef _ORANGEPI_H
 #define _ORANGEPI_H
 
+#include <stdint.h>
+
 #if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
 /********** OrangePi 2G-IOT *************/
 /*
@@ -11,6 +13,7 @@
  */
 
 /********* local data ************/
+#define RDA_CONFIG_REGS                    0x11a09000
 #define GPIOA_BASE                         0x20930000
 #define GPIOB_BASE                         0x20931000
 #define GPIOC_BASE                         0x11A08000
@@ -28,6 +31,15 @@
 
 #define MEM_INFO                           (512)
 #define MAP_SIZE_L                         (4096 * 2)
+
+struct rda_config_regs {
+	uint32_t chip_id;
+	uint32_t build_version;
+	uint32_t bb_gpio_mode;      // enable/disable GPIO_C
+	uint32_t ap_gpioa_mode;     // enable/disable GPIO_A
+	uint32_t ap_gpiob_mode;     // enable/disable GPIO_B
+	uint32_t ap_gpiod_mode;     // enable/disable GPIO_D
+};
 
 #endif /* CONFIG_ORANGEPI_2G_IOT */
 
@@ -86,6 +98,9 @@ extern int physToPinOrangePi[64];
 extern int physToWpiOrangePi[64];
 extern volatile uint32_t *OrangePi_gpio;
 extern volatile uint32_t *OrangePi_gpioC;
+#if defined (CONFIG_ORANGEPI_2G_IOT) || defined (CONFIG_ORANGEPI_I96)
+volatile struct rda_config_regs *OrangePi_cfg_regs;
+#endif
 
 extern unsigned int readR(unsigned int addr);
 extern void writeR(unsigned int val, unsigned int addr);
